@@ -1,0 +1,15 @@
+*fits
+*txt
+*png
+*pdf
+*pickle
+*log
+*logerr
+*sh
+__pycache__
+*pyc
+*pickle~*
+logs
+logs_inj
+*yaml
+*~
