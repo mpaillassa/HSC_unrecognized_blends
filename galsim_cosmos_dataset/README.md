@@ -18,12 +18,9 @@ This directory contains code to make the validation process of the data by using
     *  Running tasks to get forced measurements through the multibandDriver.
 * _make_validation_plots.py_: analyze the detection/measurement results and makes validation plots (magnitude histograms of detected galaxies and true versus measured magnitude plots).
 
-### measurement_noise
+### mag_vs_snr
 * _download_hsc_data.py_: download all necessary pdr2_wide HSC data of COSMOS field (9813 tract, all 81 patches, 9812 tract, 0,X patches) to inject sources in those coadds.
-* _prepare_injection_sources.py_: prepare fake catalogs and fake source images to be added in pdr2_wide HSC data with the insertFakes task.
+* _prepare_injection.py_: prepare fake catalogs and fake source images to be added in pdr2_wide HSC data with the insertFakes task.
 * _run_injection.py_: run the insertFakes task to inject fake sources in pdr2_wide HSC data. This needs to be run with LSST pipelines > 23.0.0 because injecting sources in real data from images is not yet in HscPipe 8.
-* _run_fake_meas.py_: run pipeline detection and measurements on the pdr2_wide HSC data containing fake sources.
+* _run_inj_meas.py_: run pipeline detection and measurements on the pdr2_wide HSC data containing fake sources.
 * _compare_meas_noise.py_: compare measurements of injected sources within HSC pdr2_wide data with their respective Blending ToolKit stamp measurements to assess if the noise in Blending ToolKit stamps is similar to that of real data.
-
-### psf_check
-* _check_psf.py_: script to compare the PSF used in BTK simulations to those of real COSMOS pdr2 data.
