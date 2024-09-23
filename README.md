@@ -1,6 +1,6 @@
-# MLDeblender
+# HSC unrecognized blend investigation
 
-This repository contains scripts to reproduce the data products and results of blend (and unrecognized blend) identification for HSC.
+This repository contains scripts to reproduce the data products and results of blend (and unrecognized blend) investigation for HSC.
 As it involves many different environments (HSC pipelines, LSST pipelines, Blending ToolKit, GPU machine), it consists of different directories containing scripts to run separately.
 The directories and their corresponding use case are listed below and more details are contained in additional READMEs in each directory.
 
