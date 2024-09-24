@@ -236,7 +236,7 @@ def make_figures(
         - cnn_res (np.ndarray or None): blend probabilities from CNN.
     """
 
-    row_size = 10
+    row_size = 25
     fig = plt.figure(figsize=(row_size, row_size))
 
     # for each classification case
@@ -264,14 +264,12 @@ def make_figures(
                 spec = gridspec.GridSpec(ncols=1, nrows=2, height_ratios=[2, 1])
                 ax1, ax2 = fig.add_subplot(spec[0]), fig.add_subplot(spec[1])
                 ax1.imshow(rgb_im)
-                fontsize = 10
             else:
                 ax1 = plt
                 ax1.imshow(rgb_im)
-                fontsize = 20
 
             # add coords annotations
-            add_coord_annotations(ax1, pp_results, stamp_idx, im_size, fontsize)
+            add_coord_annotations(ax1, pp_results, stamp_idx, im_size)
             ax1.axis("off")
 
             # if table requested
@@ -281,7 +279,7 @@ def make_figures(
                 data_table = make_table(pp_results, stamp_idx, bands)
 
                 # make the column labels of the table
-                col_lab = ["Quantity / Bands"]
+                col_lab = ["Quantity / Band"]
                 for band in bands:
                     col_lab.append(band)
 
@@ -304,10 +302,12 @@ def make_figures(
                     cellText=data_table,
                     colLabels=col_lab,
                     cellLoc="center",
-                    fontsize=60,
                     loc="center",
                     colColours=colors,
                 )
+                table.auto_set_font_size(False)
+                table.set_fontsize(30)
+                table.scale(1.5, 2.2)
                 ax2.axis("off")
 
                 # add cnn probability result if requested
@@ -366,7 +366,7 @@ def add_coord_annotations(
     pp_results,
     stamp_idx,
     im_size,
-    fontsize,
+    fontsize=50,
     default_band="i",
     gt_color="black",
     pred_color="red",
@@ -387,7 +387,7 @@ def add_coord_annotations(
     gt_coords = pp_results[stamp_idx][default_band]["gt_coords"]
     k = 1
     for gt in gt_coords:
-        ax1.plot(gt[0], im_size - gt[1], "+", color=gt_color)
+        ax1.plot(gt[0], im_size - gt[1], "+", color=gt_color, mew=5, ms=30)
         ax1.annotate(
             str(k),
             xy=(gt[0] - 4, im_size - gt[1]),
@@ -407,7 +407,9 @@ def add_coord_annotations(
         k = 1
         for pred in pred_coords:
             if not isinstance(pred, int):
-                ax1.plot(pred[0], im_size - pred[1], "x", color=pred_color)
+                ax1.plot(
+                    pred[0], im_size - pred[1], "x", color=pred_color, mew=5, ms=30
+                )
                 ax1.annotate(
                     str(k),
                     xy=(pred[0] + 2, im_size - pred[1]),
@@ -580,7 +582,7 @@ def main():
 
     # blending directories
     suffix = "_release_run"
-    set_name = "_ms4"
+    set_name = "_ms8"
     blend_dir = os.path.join(data_dir, "blending")
     stamp_dir = os.path.join(blend_dir, f"set_with_hst{set_name}{suffix}")
 
@@ -605,11 +607,14 @@ def main():
     else:
         with open(single_cl_pickle_path, "rb") as pf:
             single_cl = pickle.load(pf)
+
+    # paper figure
+    paper_cl = {"1": [59881]}
     make_figures(
-        10,
+        1,
         bands,
         pp_results,
-        single_cl,
+        paper_cl,  # single_cl,
         stamp_dir,
         set_name,
         stamp_type="single",
@@ -628,11 +633,27 @@ def main():
     else:
         with open(blend_cl_pickle_path, "rb") as pf:
             blend_cl = pickle.load(pf)
+
+    # paper figure
+    paper_cl = {"2": [19749]}
     make_figures(
-        10,
+        1,
         bands,
         pp_results,
-        blend_cl,
+        paper_cl,  # blend_cl,
+        stamp_dir,
+        set_name,
+        stamp_type="blend",
+        cnn_res=None,
+        with_table=True,
+    )
+
+    paper_cl = {"0_fp": [113036]}
+    make_figures(
+        1,
+        bands,
+        pp_results,
+        paper_cl,  # blend_cl,
         stamp_dir,
         set_name,
         stamp_type="blend",
