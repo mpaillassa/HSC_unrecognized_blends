@@ -144,15 +144,30 @@ def make_cf_matrix(set_name, gt_labels, preds, model_name, out_dir, threshold=0.
     im = ax.imshow(cf_matrix)
     cbar = ax.figure.colorbar(im, ax=ax)
     ax.set_xticks(np.arange(len(pred_names)))
-    ax.set_xticklabels(pred_names)
+    ax.set_xticklabels(pred_names, fontsize=14)
     ax.set_yticks(np.arange(len(gt_names)))
-    ax.set_yticklabels(gt_names)
+    ax.set_yticklabels(gt_names, fontsize=14)
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
     for i in range(len(gt_names)):
         for j in range(len(pred_names)):
-            text = ax.text(
-                j, i, f"{cf_matrix[i, j]:.2f}", ha="center", va="center", color="black"
-            )
+            if cf_matrix[i, j] > 0.25:
+                text = ax.text(
+                    j,
+                    i,
+                    f"{cf_matrix[i, j]:.2f}",
+                    ha="center",
+                    va="center",
+                    color="black",
+                )
+            else:
+                text = ax.text(
+                    j,
+                    i,
+                    f"{cf_matrix[i, j]:.2f}",
+                    ha="center",
+                    va="center",
+                    color="white",
+                )
     plt.tight_layout()
     plt.savefig(f"{out_dir}/{model_name}{set_name}_cf.png")
     plt.gcf().clear()
@@ -420,11 +435,11 @@ def make_1d_plot(
     # make figure
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
-    ax1.plot(bin_values, ml_acc, "o", linestyle="-", label="ML model")
+    ax1.plot(bin_values, ml_acc, "o", linestyle="-", label="CNN")
     ax1.plot(bin_values, hscpipe_acc, "o", linestyle="-", label="HscPipe")
-    ax1.set_xlabel(blend_parameter_desc)
-    ax1.set_ylabel("Blend detection accuracy")
-    ax1.legend()
+    ax1.set_xlabel(blend_parameter_desc, fontsize=14)
+    ax1.set_ylabel("Blend detection accuracy", fontsize=14)
+    ax1.legend(fontsize=12)
     fig.tight_layout()
     fig_path = os.path.join(
         out_dir, f"{blend_parameter_name}_{ml_model_name}{set_name}.png"
@@ -510,7 +525,7 @@ def make_2d_plot(
     blend_parameter_name,
     blend_parameter_desc,
     out_dir,
-    nb_bins=100,
+    nb_bins=25,
     threshold=0.5,
 ):
     """Makes the corresponding ml model and hscpipe blend detection accuracy vs 2d blend configuration parameter plot.
@@ -702,7 +717,7 @@ def make_2d_fig(
 
     # adding tick labels
     new_xticks, new_yticks = [], []
-    for b in range(0, nb_bins, nb_bins // 10):
+    for b in range(0, nb_bins, nb_bins // 5):
         new_xticks.append(xticks[b])
         new_yticks.append(yticks[b])
     xtick_names = []
@@ -711,15 +726,15 @@ def make_2d_fig(
         xtick_names.append(f"{xtick:.1f}")
     for ytick in new_yticks:
         ytick_names.append(f"{ytick:.1f}")
-    ax.set_xticks(np.arange(0, nb_bins, nb_bins // 10))
+    ax.set_xticks(np.arange(0, nb_bins, nb_bins // 5))
     ax.set_xticklabels(xtick_names)
-    ax.set_yticks(np.arange(0, nb_bins, nb_bins // 10))
+    ax.set_yticks(np.arange(0, nb_bins, nb_bins // 5))
     ax.set_yticklabels(ytick_names)
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 
     # axis labels
-    ax.set_xlabel(blend_parameter_desc[0])
-    ax.set_ylabel(blend_parameter_desc[1])
+    ax.set_xlabel(blend_parameter_desc[0], fontsize=14)
+    ax.set_ylabel(blend_parameter_desc[1], fontsize=14)
 
     # plot and save
     plt.tight_layout()
