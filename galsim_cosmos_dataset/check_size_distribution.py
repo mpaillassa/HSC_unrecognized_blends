@@ -46,9 +46,9 @@ def main():
         label="Normalized sampled distribution",
         alpha=0.25,
     )
-    plt.xlabel("Flux radius")
-    plt.ylabel("Counts")
-    plt.legend()
+    plt.xlabel("Flux radius", fontsize=14)
+    plt.ylabel("Counts", fontsize=14)
+    plt.legend(fontsize=12)
     plt.savefig("flux_radius_distributions.png")
 
 

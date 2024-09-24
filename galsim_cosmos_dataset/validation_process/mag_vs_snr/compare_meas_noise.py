@@ -280,10 +280,10 @@ def main():
             linestyle="-",
         )
 
-        plt.legend()
-        plt.xlabel("SNR")
-        plt.ylabel("Magnitude")
-        plt.title(f"{band.upper()} band")
+        plt.legend(fontsize=12)
+        plt.xlabel(f"{band.upper()} SNR", fontsize=14)
+        plt.ylabel(f"{band.upper()} Magnitude", fontsize=14)
+        # plt.title(f"{band.upper()} band")
         plt.savefig(os.path.join(out_dir, f"{band}_mag_snr_errbar.png"))
         plt.gcf().clear()
 

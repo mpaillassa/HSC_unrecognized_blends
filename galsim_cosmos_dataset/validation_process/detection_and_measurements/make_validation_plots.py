@@ -216,9 +216,9 @@ def make_magnitude_plots(
         cmap=color,
     )
     plt.colorbar()
-    plt.xlabel(f"True {band.upper()} magnitude")
-    plt.ylabel(f"Measured {band.upper()} magnitude")
-    plt.title(f"{band.upper()} band magnitude measurement validation")
+    plt.xlabel(f"True {band.upper()} magnitude", fontsize=14)
+    plt.ylabel(f"Measured {band.upper()} magnitude", fontsize=14)
+    # plt.title(f"{band.upper()} band magnitude measurement validation")
     plt.tight_layout()
     plt.savefig(os.path.join(plot_dir, f"mag_{band}_validation.png"))
     plt.savefig(os.path.join(plot_dir, f"mag_{band}_validation.pdf"))
