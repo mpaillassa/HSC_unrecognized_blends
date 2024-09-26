@@ -154,6 +154,7 @@ def make_data_set(catalog, whole_hst_catalog, out_dir, div, lim, data_dir):
                     rows.append(
                         [
                             gen_count,
+                            source["ID"],
                             ra,
                             dec,
                             mag,
@@ -174,6 +175,7 @@ def make_data_set(catalog, whole_hst_catalog, out_dir, div, lim, data_dir):
                     rows.append(
                         [
                             gen_count,
+                            source["ID"],
                             ra,
                             dec,
                             mag,
@@ -196,6 +198,7 @@ def make_data_set(catalog, whole_hst_catalog, out_dir, div, lim, data_dir):
                 rows2.append(
                     [
                         gen_count,
+                        source["ID"],
                         source["FLUX_RADIUS_1"][1],
                         source["g_HSC"],
                         source["r_HSC"],
@@ -211,6 +214,7 @@ def make_data_set(catalog, whole_hst_catalog, out_dir, div, lim, data_dir):
     # write the first catalog
     col_names = [
         "IDENT",
+        "ELCOSMOS_ID",
         "RA",
         "DEC",
         "MAG",
@@ -227,6 +231,7 @@ def make_data_set(catalog, whole_hst_catalog, out_dir, div, lim, data_dir):
         "stamp_flux",
     ]
     col_types = [
+        "i4",
         "i4",
         "f8",
         "f8",
@@ -258,6 +263,7 @@ def make_data_set(catalog, whole_hst_catalog, out_dir, div, lim, data_dir):
     # write the second catalog
     col_names2 = [
         "IDENT",
+        "ELCOSMOS_ID",
         "flux_radius",
         "HSC_g",
         "HSC_r",
@@ -266,7 +272,7 @@ def make_data_set(catalog, whole_hst_catalog, out_dir, div, lim, data_dir):
         "HSC_y",
         "ZPHOT",
     ]
-    col_types2 = ["i4", "f8", "f8", "f8", "f8", "f8", "f8", "f8"]
+    col_types2 = ["i4", "i4", "f8", "f8", "f8", "f8", "f8", "f8", "f8"]
     final_table2 = Table(rows=rows2, names=col_names2, dtype=col_types2)
     if lim == 100:
         final_table2.write(
