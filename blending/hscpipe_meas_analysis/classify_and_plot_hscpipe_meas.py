@@ -608,6 +608,9 @@ def main():
         with open(single_cl_pickle_path, "rb") as pf:
             single_cl = pickle.load(pf)
 
+    for k in single_cl.keys():
+        print(k, len(single_cl[k]))
+
     # paper figure
     paper_cl = {"1": [59881]}
     make_figures(
@@ -633,6 +636,9 @@ def main():
     else:
         with open(blend_cl_pickle_path, "rb") as pf:
             blend_cl = pickle.load(pf)
+
+    for k in blend_cl.keys():
+        print(k, len(blend_cl[k]))
 
     # paper figure
     paper_cl = {"2": [19749]}

@@ -168,6 +168,16 @@ def make_cf_matrix(set_name, gt_labels, preds, model_name, out_dir, threshold=0.
                     va="center",
                     color="white",
                 )
+    if "torch" in model_name:
+        if "ms8" in set_name:
+            plt.title("CNN Set 1", fontsize=14)
+        else:
+            plt.title("CNN Set 2", fontsize=14)
+    else:
+        if "ms8" in set_name:
+            plt.title("HSC pipelines Set 1", fontsize=14)
+        else:
+            plt.title("HSC pipelines Set 2", fontsize=14)
     plt.tight_layout()
     plt.savefig(f"{out_dir}/{model_name}{set_name}_cf.png")
     plt.gcf().clear()
@@ -548,7 +558,10 @@ def make_2d_plot(
     )
 
     # define boundaries for binning
-    if blend_parameter_name == "distance_photoz_diff":
+    if (
+        blend_parameter_name == "distance_photoz_diff"
+        or blend_parameter_name == "distance_size_ratio"
+    ):
         mini1 = np.min(blend_parameter2)
         maxi1 = np.max(blend_parameter2)
         mini2 = np.min(blend_parameter1)
@@ -680,6 +693,12 @@ def get_2d_blend_parameter(blend_sample_data, blend_parameter_name):
         blend_parameter1 = blend_sample_data["distance"]
         photoz = blend_sample_data["photoz"]
         blend_parameter2 = np.absolute(photoz[:, 0] - photoz[:, 1])
+    elif blend_parameter_name == "distance_size_ratio":
+        blend_parameter1 = blend_sample_data["distance"]
+        size_moment = blend_sample_data["size_moment"]
+        min_size_moment = np.min(size_moment, axis=1)
+        max_size_moment = np.max(size_moment, axis=1)
+        blend_parameter2 = min_size_moment / max_size_moment
 
     return blend_parameter1, blend_parameter2
 
@@ -735,6 +754,20 @@ def make_2d_fig(
     # axis labels
     ax.set_xlabel(blend_parameter_desc[0], fontsize=14)
     ax.set_ylabel(blend_parameter_desc[1], fontsize=14)
+    if "torch" in model_name:
+        if "ms8" in set_name:
+            plt.title("CNN Set 1 blend detection accuracy", fontsize=14)
+            # cbar.ax.set_ylabel('CNN Set 1 blend detection accuracy', rotation=270, fontsize=12, labelpad=15)
+        else:
+            plt.title("CNN Set 2 blend detection accuracy", fontsize=14)
+            # cbar.ax.set_ylabel('CNN Set 2 blend detection accuracy', rotation=270, fontsize=12, labelpad=15)
+    else:
+        if "ms8" in set_name:
+            plt.title("HSC pipelines Set 1 blend detection accuracy", fontsize=14)
+            # cbar.ax.set_ylabel('HSC pipelines Set 1 blend detection accuracy', rotation=270, fontsize=12, labelpad=15)
+        else:
+            plt.title("HSC pipelines Set 2 blend detection accuracy", fontsize=14)
+            # cbar.ax.set_ylabel('HSC pipelines Set 2 blend detection accuracy', rotation=270, fontsize=12, labelpad=15)
 
     # plot and save
     plt.tight_layout()
@@ -941,7 +974,7 @@ def main():
     # data directories
     data_dir = "../../data"
     blend_dir = os.path.join(data_dir, "blending")
-    set_name = "_ms8"
+    set_name = "_ms4"
     suffix = "_release_run"
     ml_model_name = "torch_sky_sigma"
 
@@ -1011,6 +1044,7 @@ def main():
         "min_size_max_size_moment": ["Minimum moment size", "Maximum moment size"],
         "min_size_max_size_kron": ["Minimum kron size", "Maximum kron size"],
         "distance_photoz_diff": ["Distance (pixels)", "Photo-z difference"],
+        "distance_size_ratio": ["Distance (pixels)", "Size ratio"],
     }
     cur_out_dir = os.path.join(out_dir, "2d_plots")
     if not os.path.isdir(cur_out_dir):
